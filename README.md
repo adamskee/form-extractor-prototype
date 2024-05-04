@@ -14,6 +14,9 @@ Here's a short demo video:
 
 https://github.com/timpaul/form-extractor-prototype/assets/1590604/8adea926-808e-4011-80c6-18ce4a549a00
 
+You'll notice that it doesn't try to faithfully replicate every field in a question.
+Instead, it uses the relevant components and patterns from the [GOV.UK Design System](https://design-system.service.gov.uk/).
+This is a feature not a bug ;-)
 
 ## Run locally
 
@@ -27,6 +30,16 @@ Start the app with `npm start`.
 
 It'll be available at http://localhost:3000/
 
+## Current capabilities
+
+- breaking a form down into questions
+- distinguishing between question, hint and field text
+- distinguishing between single-choice and multiple-choice questions
+- recognising common question types like 'name', 'address', 'date' etc.
+- recognising when an image isn't a form
+- recognising when a question has conditional routing
+- processing hand drawn forms
+
 ## Current limitations
 
 - it can only process jpg images of forms, not documents
@@ -39,21 +52,31 @@ It'll be available at http://localhost:3000/
 
 *Disclaimer: This is a prototype and I am not a developer ;-).*
 
-The main UI is in `app/views/index.html`.
+The main UI is in [app/views/index.html](https://github.com/timpaul/form-extractor-prototype/blob/main/app/views/index.html).
 
-Additional CSS styles are in `public/assets/style.css`
+Other Nunjucks page templates and macros are in [app/views](https://github.com/timpaul/form-extractor-prototype/tree/main/app/views).
 
-The script in `public/assets/scripts.js` handles the image preview and loading spinner.
+Additional CSS styles are in [public/assets/style.css](https://github.com/timpaul/form-extractor-prototype/blob/main/assets/style.scss).
 
-The form in `index.html` sends the image at the URL provided by the user to the Claude API. 
+The script in [public/assets/scripts.js](https://github.com/timpaul/form-extractor-prototype/blob/main/assets/scripts.js) handles the image preview and loading spinner.
 
-It does this via the 'SendToClaude' function in `server.js`.
+The form in [index.html](https://github.com/timpaul/form-extractor-prototype/blob/main/app/views/index.html) sends the image at the URL provided by the user to the Claude API. 
+
+It does this via the 'SendToClaude' function in [server.js](https://github.com/timpaul/form-extractor-prototype/blob/main/server.js).
 
 The function makes use of the 'tools' feature of Claude.
 
 That allows you to specify a JSON schema that you'd like it's response to conform to.
 
-The results are saved as JSON files in `app/data/`.
+The JSON schema is specified in [data/extract-form-questions.json](https://github.com/timpaul/form-extractor-prototype/blob/main/data/extract-form-questions.json).
 
-Those files are used to generate the pages that are loaded into iframes in `app/views/index.html`.
+The results are saved as JSON files in [app/data/](https://github.com/timpaul/form-extractor-prototype/tree/main/app/data).
+
+Those files are used to generate the pages that are loaded into iframes in [app/views/index.html](https://github.com/timpaul/form-extractor-prototype/blob/main/app/views/index.html).
+
+The form components are specificed in [app/views/answer-types.njk](https://github.com/timpaul/form-extractor-prototype/blob/main/app/views/answer-types.njk)
+
+They are built using the Nunjucks components in [GOV.UK Frontend](https://www.npmjs.com/package/govuk-frontend).
+
+Page rendering is defined in the URL routing rules found at the bottom of [server.js](https://github.com/timpaul/form-extractor-prototype/blob/main/server.js).
 

@@ -21,6 +21,15 @@
 
 
 {% block beforeContent %}
+
+  {% if currentPageJSON.needs_routing == true %}
+  {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+  {{ govukNotificationBanner({
+    text: "It looks like this page needs conditional routing. Check the original form.",
+    classes: "govuk-!-margin-top-2"
+  }) }}
+
+{% endif %}
     {% if not alert %}
     {{ govukBackLink({
       text: "Back",
@@ -46,7 +55,10 @@
       <span class="govuk-caption-m">Question {{question}}</span>
 
       
-      {% if currentPageJSON.answer_type == "date" %}
+      {% if currentPageJSON.answer_type == "date" and currentPageJSON.answer_settings.input_type == "date_of_birth" %}
+        {{ answerType.date_of_birth(currentPageJSON.question_text, currentPageJSON.hint_text) }}
+
+      {% elif currentPageJSON.answer_type == "date" %}
         {{ answerType.other_date(currentPageJSON.question_text, currentPageJSON.hint_text) }}
 
       {% elif currentPageJSON.answer_type == "name" %}
@@ -77,10 +89,10 @@
         {{ answerType.yes_no(currentPageJSON.question_text, currentPageJSON.hint_text) }}
 
       {% elif currentPageJSON.answer_type == "single_choice" %}
-        {{ answerType.single_choice(currentPageJSON.question_text, currentPageJSON.options) }}
+        {{ answerType.single_choice(currentPageJSON.question_text, currentPageJSON.hint_text, currentPageJSON.options) }}
 
       {% elif currentPageJSON.answer_type == "multiple_choice" %}
-        {{ answerType.multiple_choice(currentPageJSON.question_text, currentPageJSON.options) }}
+        {{ answerType.multiple_choice(currentPageJSON.question_text, currentPageJSON.hint_text, currentPageJSON.options) }}
 
       {% else %}
         <h1 class="govuk-heading-l">
@@ -99,6 +111,7 @@
 
   </div>
 </div>
+
 {% endblock %}
 
 {% if alert %}

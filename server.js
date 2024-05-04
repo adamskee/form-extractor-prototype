@@ -72,6 +72,13 @@ app.post('/sendToClaude', async (req, res) => {
     {% set resultJSON = ${content} %}
   `;
 
+  // Create the prompt to send with the image and the tool
+  const prompt = [
+    "Is this a form?", 
+    "It's only a form if it contains form field boxes.",
+    "If it is a form, extract the questions from it using the extract_form_questions tool."
+  ].join();
+
   // Call Claude!
 
   try {
@@ -94,17 +101,17 @@ app.post('/sendToClaude', async (req, res) => {
             },
             {
                 "type": "text",
-                "text": "Is this a form? It's only a form if it contains form field boxes. If it is a form, extract the questions from it using the extract_form_questions tool."
+                "text": prompt
             }
         ],
       }]
     });
-  
+
     console.log(message);
 
-    let result = message.content[1].input;
+    let result = message.content[1].input; 
 
-    result.imageURL = image_url
+    result.imageURL = image_url;
 
     // Write the results into a 'results' folder
 

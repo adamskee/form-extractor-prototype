@@ -62,7 +62,7 @@
 
 {# DATE OF BIRTH #}
 
-{% macro dateOfBirth(question, hint) %}
+{% macro date_of_birth(question, hint) %}
 {{ govukDateInput({
   id: "dob",
   namePrefix: "dob",
@@ -184,6 +184,9 @@
     classes: "govuk-label--l",
     isPageHeading: true
   },
+  hint: {
+    text: hint
+  },
   id: "telephone-number",
   name: "telephoneNumber",
   type: "tel",
@@ -302,9 +305,9 @@
 }) }}
 {% endmacro %}
 
-{# Single choice #}
+{# SINGLE CHOICE #}
 
-{% macro single_choice(question, options) %}
+{% macro single_choice(question, hint, options) %}
 {{ govukRadios({
   name: "selection",
   fieldset: {
@@ -314,13 +317,16 @@
       classes: "govuk-fieldset__legend--l"
     }
   },
+  hint: {
+    text: hint
+  },
   items: options
 }) }}
 {% endmacro %}
 
-{# Multiple choice #}
+{# MULTIPLE CHOICE #}
 
-{% macro multiple_choice(question, options) %}
+{% macro multiple_choice(question, hint, options) %}
 {{ govukCheckboxes({
   name: "selection",
   fieldset: {
@@ -331,7 +337,7 @@
     }
   },
   hint: {
-    text: "Select all that apply."
+    text: hint
   },
   items: options
 }) }}
